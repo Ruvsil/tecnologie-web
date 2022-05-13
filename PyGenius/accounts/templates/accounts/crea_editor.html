@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+{% block title %} Creazione Editor {% endblock %}
+
+{% block header1 %}
+  Pagina di Registrazione
+{% endblock %}
+
+{% block content %}
+
+<form method="post"> {% csrf_token %}
+
+  {{form | crispy}}
+
+  <input type="submit" class="btn btn-success" value="Registrati ora!">
+
+  </form>
+<br>
+<div>
+  <p> <a href="{% url 'accounts:register-artist' %}">Sei un artista?</a></p>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% endblock %}
