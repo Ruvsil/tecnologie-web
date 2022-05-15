@@ -8,9 +8,11 @@
 {% for can in object_list %}
 <div class="card d-flex justify-content-center " style="background-color:#2E1C2B;width:75">
   <h5 class="card-header" style="color:#E4DFE2;height:50px"> {{can.titolo|capfirst}}
-  <img src="{% static '/imgs/img1.jpeg' %}" width="35"  height="35" alt="cover">
 
   </h5>
+
+  <img src="{% static '/covers/saas.png' %}" width="200"  height="200">
+
   <h5 class="card-body" style="color:#E4DFE2">{{can.autore}} {{can.durata}} </h5>
 
 </div>

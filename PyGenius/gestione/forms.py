@@ -14,15 +14,19 @@ class CreaCanzoneForm(forms.ModelForm):
         HTML("<br>"),
         Field('durata', placeholder='00:00', css_class='text-center',style=style_string),
         HTML("<br>"),
-        Field('data_pub',show_label='false', css_class='text-center',style=style_string),
+        Field('data_pub', css_class='text-center',style=style_string),
         HTML("<br>"),
-        Field('testo', css_class='text-center',style=style_string)
-    )
+        Field('testo', css_class='text-center',style=style_string),
+        HTML("<br>"),
+        Field('cover', css_class='text-center',style='background-color:#000000'),
+        HTML("<div style='color:#BBBBBB'>Immagine di copertina(500x500) </div> <br>")
+            )
     class Meta:
         model = Canzone
-        fields = '__all__'
+        fields =['titolo','durata','data_pub','testo','cover']
         widgets = {
-            'data_pub' : forms.DateInput(attrs={'type':'date'})
+            'data_pub' : forms.DateInput(attrs={'type':'date'}),
+            'cover' : forms.FileInput(attrs={'style':'background-color:#3C1B37;border-top:10px;border-left:10px;border-color:#1A1018;color:#E4DFE2'}),
         }
 
 
