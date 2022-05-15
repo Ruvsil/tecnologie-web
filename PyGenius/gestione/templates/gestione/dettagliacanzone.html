@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} {{object.autore}} ― {{object.titolo}}{% endblock %}
+
+{% block content %}
+
+<div class="card d-flex" style="background-color:#3C1B37">
+  <h5 class="card-header" style="color:#E4DFE2;height:300px">
+
+
+      <div class="card-header" style="font-size:50px"> <img src="{% static object.cover.url %}" width="200"  height="200">  {{object.titolo|capfirst}}</div>
+
+
+
+    <div style="color:#E4DFE2">{{object.autore}} {{object.durata}} </div>
+  </h5>
+
+    <div class="card-body" style="background-color:#4A1942;width:75;color:#E4DFE2">{{object.testo|linebreaksbr}}</div>
+
+
+
+
+
+</div>
+
+
+{% endblock %}

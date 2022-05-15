@@ -1,20 +1,27 @@
 {% extends 'base.html' %}
 
-{% block header1 %}Lista Canzoni{% endblock %}
+{% block header1 %}{{view.title}}{% endblock %}
+
+{% block title %} {{view.title}} {% endblock %}
 
 {% load static %}
 
 {% block content %}
 {% for can in object_list %}
-<div class="card d-flex justify-content-center " style="background-color:#2E1C2B;width:75">
-  <h5 class="card-header" style="color:#E4DFE2;height:50px"> {{can.titolo|capfirst}}
+<div class="card d-flex justify-content-center " style="background-color:#2E1C2B">
+
+  <h5 class="card-header" style="color:#E4DFE2;font-size:50px;text-align:center">
+        <img src="{% static can.cover.url %}" width="200"  height="200" style="align:left">
+
+
+          <a style="color:#E4DFE2;ext-align:center" href="{% url 'gestione:dettagliacanzone' can.pk %}">
+              {{can.titolo|capfirst}}
+              <br>
+              <a class="card-body" style="color:#E4DFE2;font-size:25px" href="{% url 'gestione:dettagliacanzone' can.autore.pk %}">{{can.autore|capfirst}}</a>
+
+          </a>
 
   </h5>
-
-  <img src="{% static '/covers/saas.png' %}" width="200"  height="200">
-
-  <h5 class="card-body" style="color:#E4DFE2">{{can.autore}} {{can.durata}} </h5>
-
 </div>
 {% endfor %}
 

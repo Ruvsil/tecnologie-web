@@ -30,4 +30,9 @@ class CreaCanzone(GroupRequiredMixin,CreateView):
 
 class ListaCanzoni(ListView):
     model = Canzone
+    title = 'Lista Canzoni'
     template_name = 'gestione/listacanzoni.html'
+
+class DettagliaCanzone(DetailView):
+    model = Canzone
+    template_name = 'gestione/dettagliacanzone.html'
