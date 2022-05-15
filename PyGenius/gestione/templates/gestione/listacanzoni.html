@@ -1,28 +1,30 @@
 {% extends 'base.html' %}
 
-{% block header1 %}{{view.title}}{% endblock %}
+{% block header1 %}{{title}}{% endblock %}
 
-{% block title %} {{view.title}} {% endblock %}
+{% block title %} {{title}}{% endblock %}
 
 {% load static %}
 
 {% block content %}
 {% for can in object_list %}
-<div class="card d-flex justify-content-center " style="background-color:#2E1C2B">
+<div class="card d-flex justify-content-center " style="background-color:#6A2555;border: 5px solid #1A1018;border-radius:10px">
 
-  <h5 class="card-header" style="color:#E4DFE2;font-size:50px;text-align:center">
-        <img src="{% static can.cover.url %}" width="200"  height="200" style="align:left">
+  <h5 class="card-header" style="color:#E4DFE2;font-size:55px;text-align:center">
+      <br>
+        <img src="{% static can.cover.url %}" width="200"  height="200">
 
 
           <a style="color:#E4DFE2;ext-align:center" href="{% url 'gestione:dettagliacanzone' can.pk %}">
               {{can.titolo|capfirst}}
               <br>
-              <a class="card-body" style="color:#E4DFE2;font-size:25px" href="{% url 'gestione:dettagliacanzone' can.autore.pk %}">{{can.autore|capfirst}}</a>
+              <a class="card-body" style="color:#E4DFE2;font-size:25px" href="{% url 'gestione:listacanzoni' can.autore.pk %}">{{can.autore|capfirst}}</a>
 
           </a>
 
   </h5>
 </div>
+<br>
 {% endfor %}
 
 {% endblock %}

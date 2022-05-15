@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -33,6 +33,25 @@ class ListaCanzoni(ListView):
     title = 'Lista Canzoni'
     template_name = 'gestione/listacanzoni.html'
 
+class ListaCanzoniArtista(ListView):
+    model = Canzone
+    template_name = 'gestione/listacanzoni.html'
+
+
+    def get_queryset(self):
+        arg = self.kwargs['pk']
+        qs=self.model.objects.filter(autore=arg)
+        return qs
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context=super().get_context_data()
+        context['title'] = 'Pubblicazioni'
+        return context
+
 class DettagliaCanzone(DetailView):
     model = Canzone
     template_name = 'gestione/dettagliacanzone.html'
+
+class EliminaCanzone(DeleteView):
+    model = Canzone
+    success_url = reverse_lazy('gestione:listacanzoni')

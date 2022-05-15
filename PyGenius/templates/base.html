@@ -24,14 +24,23 @@
 
 <style>
     .navbar-custom {
-        background-color:#2E1C2B
+        background-color:#2E1C2B;
+    }
+    .navbar-container {
+      background-color:#2E1C2B;
+      float:left;
+      width:auto;
+    }
+    .navbar-custom .navbar-brand, .navbar-custom .nav-link{
+        color: #893168;
 
     }
-    .navbar-custom .navbar-brand, .navbar-custom .navbar-text, .navbar-custom .nav-item{
-        color: #893168
-    }
-    .navbar-custom .navbar-expand-sm {
-        color: #ffffff
+
+    .navbar-custom .nav-link {
+        background-color:#2E1C2B;
+        color:#E4DFE2;
+        float:left;
+
     }
 </style>
 
@@ -69,34 +78,25 @@
 {% endif %}
 
 
-<nav class="navbar navbar-custom">
+
+
+<nav class="navbar navbar-custom" navbar>
     {% block navbar %}
-    <a class="navbar-brand" href="{% url 'home' %}">PyGenius</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" style="color:#ffffff">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse" id="collapsibleNavbar">
-      <ul class="navbar-custom">
-        <li class="nav-item">
-          {% if user.is_authenticated %}
-          <a class="nav-link" href='{% url "accounts:logout" %}'>{{user.username}} Logout</a>
-          {% else %}
-          <a class="nav-link" href='{% url "accounts:login" %}'>Login</a>
-          {% endif %}
-        </li>
+    <div class="navbar navbar-containter">
+        <a class="navbar-brand" href="{% url 'home' %}">PyGenius</a>
 
-        <li class="nav-item">
+        <a class="nav-link" href="{% url 'gestione:listacanzoni' %}">Lista Canzoni</a>
+        {% if user.is_authenticated %}
           <a class="nav-link" href="{% url 'gestione:creacanzone' %}">Aggiungi Canzone</a>
-        </li>
+          <a class="nav-link" href='{% url "accounts:logout" %}'>{{user.username}} Logout</a>
+        {% else %}
+          <a class="nav-link" href='{% url "accounts:login" %}'>Login</a>
+        {% endif %}
+</div>
+  {% endblock %}
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'gestione:listacanzoni' %}">Lista Canzoni</a>
-        </li>
 
-      </ul>
-    </div>
-    {% endblock %}
-  </nav>
+</nav>
 
 <h1 class="jumbotron text-center" style="background-color:#E4DFE2;font-family:courier new;height:150px">
   {% block header1 %}

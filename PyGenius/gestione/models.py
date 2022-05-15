@@ -11,7 +11,7 @@ class Canzone(models.Model):
     data_pub = models.DateField(default=None)
     visite = models.IntegerField(default=0)
     testo = models.TextField(max_length=10000) ##????????
-    cover = models.ImageField(default=None)
+    cover = models.ImageField(upload_to='covers',default='/imgs/missing.png', null=True,blank=True)
 
     def visita(self):
         c = get_object_or_404(Canzone, pk=self.pk)

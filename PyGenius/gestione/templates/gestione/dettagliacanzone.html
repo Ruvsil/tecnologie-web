@@ -10,20 +10,24 @@
   <h5 class="card-header" style="color:#E4DFE2;height:300px">
 
 
-      <div class="card-header" style="font-size:50px"> <img src="{% static object.cover.url %}" width="200"  height="200">  {{object.titolo|capfirst}}</div>
+      <div class="card-header" style="font-size:50px"> <img style=" border: 5px solid #893168;border-radius: 25px;" src="{% static object.cover.url %}" width="200"  height="200">  {{object.titolo|capfirst}}</div>
 
 
 
-    <div style="color:#E4DFE2">{{object.autore}} {{object.durata}} </div>
+    <div style="color:#E4DFE2;padding:20px;text-align:center"> <a style="color:#E4DFE2" href="{% url 'gestione:dettagliacanzone' object.autore.pk %}">{{object.autore|capfirst}} </a>{{object.durata}} </div>
   </h5>
 
-    <div class="card-body" style="background-color:#4A1942;width:75;color:#E4DFE2">{{object.testo|linebreaksbr}}</div>
+    <div class="card-body" style="background-color:#4A1942;width:75;color:#E4DFE2;text-align:center">{{object.testo|linebreaksbr}}</div>
 
 
 
 
+  {% if user.pk == object.autore.pk %}
+    <div><a href="{% url 'gestione:eliminacanzone' object.pk %}">Elimina Canzone</a></div>
 
+  {% endif %}
 </div>
+
 
 
 {% endblock %}
