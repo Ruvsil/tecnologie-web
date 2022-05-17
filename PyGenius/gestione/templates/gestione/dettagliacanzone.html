@@ -2,10 +2,12 @@
 
 {% load static %}
 
-{% block title %} {{object.autore}} ― {{object.titolo}}{% endblock %}
+{% block title %} {{object.visite}} {{object.autore}} ― {{object.titolo}}{% endblock %}
+
+
 
 {% block content %}
-
+<div hidden> {{object.visita}} </div>
 <div class="card d-flex" style="background-color:#3C1B37">
   <h5 class="card-header" style="color:#E4DFE2;height:300px">
 
@@ -14,7 +16,7 @@
 
 
 
-    <div style="color:#E4DFE2;padding:20px;text-align:center"> <a style="color:#E4DFE2" href="{% url 'gestione:dettagliacanzone' object.autore.pk %}">{{object.autore|capfirst}} </a>{{object.durata}} </div>
+    <div style="color:#E4DFE2;padding:20px;text-align:center"> <a style="color:#E4DFE2" href="{% url 'gestione:listacanzoni' object.autore.pk %}">{{object.autore|capfirst}} </a>{{object.durata}} </div>
   </h5>
 
     <div class="card-body" style="background-color:#4A1942;width:75;color:#E4DFE2;text-align:center">{{object.testo|linebreaksbr}}</div>
@@ -23,11 +25,19 @@
 
 
   {% if user.pk == object.autore.pk %}
-    <div><a href="{% url 'gestione:eliminacanzone' object.pk %}">Elimina Canzone</a></div>
+
 
   {% endif %}
 </div>
 
-
+  <br>
+  <br>
+    <center>
+      <div class="card" style="width:200px;text-align:center;border:5px solid;border-color:#4A1942;border-radius:50px">
+      <a style="color:#E4DFE2;background-color:#4A1942" href="{% url 'gestione:eliminacanzone' object.pk %}">
+        Elimina Canzone
+      </a>
+    </div>
+    </center>
 
 {% endblock %}

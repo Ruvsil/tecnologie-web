@@ -19,7 +19,7 @@ class CreaCanzoneForm(forms.ModelForm):
         Field('testo', css_class='text-center',style=style_string),
         HTML("<br>"),
         Field('cover', css_class='text-center',style='background-color:#000000'),
-        HTML("<div style='color:#BBBBBB'>Immagine di copertina(500x500) </div> <br>")
+        HTML("<div style='color:#BBBBBB'>Immagine di copertina non obbligatoria(500x500) </div> <br>")
             )
     class Meta:
         model = Canzone

@@ -26,14 +26,33 @@
     .navbar-custom {
         background-color:#2E1C2B;
     }
-    .navbar-container {
-      background-color:#2E1C2B;
+    .navbar-custom .navbar-link-container {
       float:left;
       width:auto;
     }
-    .navbar-custom .navbar-brand, .navbar-custom .nav-link{
-        color: #893168;
+    .navbar-custom .navbar-search-container {
+        float:right;
+        width:auto;
+        color: black
+    }
 
+
+
+    .searchbar {
+        background-color:#3C1B37;
+        color:#E4DFE2;
+        border:1px solid #E4DFE2;
+        border-radius: 5px
+
+    }
+
+    .search-button {
+        background-color:#E4DFE2;
+        border: 2px solid E4DFE2;
+    }
+
+    .navbar-custom .navbar-brand{
+        color: #893168;
     }
 
     .navbar-custom .nav-link {
@@ -78,21 +97,26 @@
 {% endif %}
 
 
-
-
 <nav class="navbar navbar-custom" navbar>
     {% block navbar %}
-    <div class="navbar navbar-containter">
+    <div class="navbar navbar-link-containter">
         <a class="navbar-brand" href="{% url 'home' %}">PyGenius</a>
 
         <a class="nav-link" href="{% url 'gestione:listacanzoni' %}">Lista Canzoni</a>
         {% if user.is_authenticated %}
+
           <a class="nav-link" href="{% url 'gestione:creacanzone' %}">Aggiungi Canzone</a>
           <a class="nav-link" href='{% url "accounts:logout" %}'>{{user.username}} Logout</a>
         {% else %}
           <a class="nav-link" href='{% url "accounts:login" %}'>Login</a>
         {% endif %}
 </div>
+    <div class="navbar navbar-search-container">
+        <form  id="search" method="get" action="{% url 'gestione:listacanzoni' %}">
+        <input class="searchbar" type="text" placeholder="Cerca..." name="q">
+        <input class="search-button"  type="submit" value="🔍">
+        </form>
+    </div>
   {% endblock %}
 
 

@@ -32,11 +32,12 @@ class ListaCanzoni(ListView):
     model = Canzone
     title = 'Lista Canzoni'
     template_name = 'gestione/listacanzoni.html'
+    ordering = ['-visite']
 
 class ListaCanzoniArtista(ListView):
     model = Canzone
     template_name = 'gestione/listacanzoni.html'
-
+    ordering = ['-visite']
 
     def get_queryset(self):
         arg = self.kwargs['pk']

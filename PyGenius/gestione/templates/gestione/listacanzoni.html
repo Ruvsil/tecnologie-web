@@ -8,19 +8,22 @@
 
 {% block content %}
 {% for can in object_list %}
-<div class="card d-flex justify-content-center " style="background-color:#6A2555;border: 5px solid #1A1018;border-radius:10px">
+<div class="card d-flex" style="background-color:#3C1B37;border: 4px solid #893168;border-radius:10px;text-align:center">
 
-  <h5 class="card-header" style="color:#E4DFE2;font-size:55px;text-align:center">
+  <h5 class="card-header" style="color:#E4DFE2;font-size:55px">
       <br>
-        <img src="{% static can.cover.url %}" width="200"  height="200">
 
-
-          <a style="color:#E4DFE2;ext-align:center" href="{% url 'gestione:dettagliacanzone' can.pk %}">
+        <img style="border: 2px solid #893168;border-radius: 25px;" src="{% static can.cover.url %}" width="250"  height="250">
+            <br>
+            <br>
+            <center>
+          <a style="color:#E4DFE2;text-align:center" href="{% url 'gestione:dettagliacanzone' can.pk %}">
               {{can.titolo|capfirst}}
               <br>
               <a class="card-body" style="color:#E4DFE2;font-size:25px" href="{% url 'gestione:listacanzoni' can.autore.pk %}">{{can.autore|capfirst}}</a>
 
           </a>
+                </center>
 
   </h5>
 </div>
