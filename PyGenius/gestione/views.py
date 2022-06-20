@@ -2,14 +2,14 @@ from .models import *
 from .forms import *
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from braces.views import GroupRequiredMixin
 
 
@@ -30,9 +30,13 @@ class CreaCanzone(GroupRequiredMixin,CreateView):
 
 class ListaCanzoni(ListView):
     model = Canzone
-    title = 'Lista Canzoni'
     template_name = 'gestione/listacanzoni.html'
     ordering = ['-visite']
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Pubblicazioni'
+        return context
 
 class ListaCanzoniArtista(ListView):
     model = Canzone
@@ -56,3 +60,14 @@ class DettagliaCanzone(DetailView):
 class EliminaCanzone(DeleteView):
     model = Canzone
     success_url = reverse_lazy('gestione:listacanzoni')
+
+
+def RisultatiRicerca(request):
+        search = request.GET['q']
+        artista = User.objects.filter(username=search)
+        print(artista)
+        if len(artista) == 1:
+
+            return HttpResponseRedirect(f"{reverse_lazy('gestione:listacanzoni')}{artista[0].pk}")
+        else :
+            return HttpResponseRedirect(reverse_lazy('gestione:listacanzoni')+'?search=notok')

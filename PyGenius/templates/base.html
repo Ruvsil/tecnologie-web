@@ -112,8 +112,8 @@
         {% endif %}
 </div>
     <div class="navbar navbar-search-container">
-        <form  id="search" method="get" action="{% url 'gestione:listacanzoni' %}">
-        <input class="searchbar" type="text" placeholder="Cerca..." name="q">
+        <form  id="search" method="GET" action="{% url 'gestione:ricerca' %}">
+            <input class="searchbar" type="text" placeholder="Cerca..." name="q">
         <input class="search-button"  type="submit" value="🔍">
         </form>
     </div>

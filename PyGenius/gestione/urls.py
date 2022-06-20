@@ -9,4 +9,5 @@ urlpatterns = [
     path('listacanzoni/<pk>/', ListaCanzoniArtista.as_view(), name='listacanzoni'),
     path('dettagliacanzone/<pk>/', DettagliaCanzone.as_view(), name='dettagliacanzone'),
     path('eliminacanzone/<pk>/', EliminaCanzone.as_view(), name='eliminacanzone'),
+    path('ricerca/', RisultatiRicerca, name='ricerca'),
 ]
