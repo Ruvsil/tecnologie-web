@@ -19,7 +19,7 @@
 
 </head>
 
-
+{% load tags_gestione %}
 <title  >♫ PyGenius ♫ {% block title %} {% endblock %}</title>
 
 <style>
@@ -70,7 +70,7 @@
 
 {% if user.is_authenticated and "ok" in request.GET.login  %}
 
-<div id="info" class="modal fade" tabindex="-1" role="dialog">
+<div id="info1" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,7 +90,7 @@
 </div>
 <script>
   $(document).ready(function(){
-      $("#info").modal('show');
+      $("#info1").modal('show');
   });
 </script>
 
@@ -103,16 +103,35 @@
         <a class="navbar-brand" href="{% url 'home' %}">PyGenius</a>
 
         <a class="nav-link" href="{% url 'gestione:listacanzoni' %}">Lista Canzoni</a>
+         <a class="nav-link" href="{% url 'gestione:listaalbum' %}">Lista Albums</a>
         {% if user.is_authenticated %}
+        {% if request.user|has_group:"Artisti" %}
 
           <a class="nav-link" href="{% url 'gestione:creacanzone' %}">Aggiungi Canzone</a>
+
+          <a class="nav-link" href="{% url 'gestione:creaalbum' %}">Aggiungi Album</a>
+        {% endif %}
+
           <a class="nav-link" href='{% url "accounts:logout" %}'>{{user.username}} Logout</a>
         {% else %}
           <a class="nav-link" href='{% url "accounts:login" %}'>Login</a>
         {% endif %}
 </div>
     <div class="navbar navbar-search-container">
-        <form  id="search" method="GET" action="{% url 'gestione:ricerca' %}">
+
+
+
+
+
+
+
+        <form  id="search" method="GET" action="{% url 'gestione:ricerca'%}">
+             <select name="model">
+                <option value="Canzoni">Canzoni</option>
+                <option value="Album" selected>Album</option>
+                <option value="Artisti">Artisti</option>
+
+            </select>
             <input class="searchbar" type="text" placeholder="Cerca..." name="q">
         <input class="search-button"  type="submit" value="🔍">
         </form>
@@ -131,9 +150,31 @@
 
 {% block allert %}
           {% if request.GET.loggedout != None %}
-            <div class="alert alert-danger" role="alert">
-                Arrivederci {{request.GET.loggedout}}
-            </div>
+
+<div id="info" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Arrivederci</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> La procedura di logout è andata a buon fine </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+      $("#info").modal('show');
+  });
+</script>
+
           {% endif %}
 {% endblock %}
 

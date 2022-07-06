@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p> La procedura di eliminazione della canzone {{request.GET.eliminato}} è andata a buon fine </p>
+        <p> La procedura di eliminazione dell'album {{request.GET.eliminato}} è andata a buon fine </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
@@ -49,13 +49,10 @@
             <br>
             <br>
             <center>
-          <a style="color:#E4DFE2;text-align:center" href="{% url 'gestione:dettagliacanzone' can.pk %}">
+          <a style="color:#E4DFE2;text-align:center" href="{% url 'gestione:dettagliaalbum' can.pk %}">
               {{can.titolo|capfirst}}
               <br>
               <a class="card-body" style="color:#E4DFE2;font-size:20px" href="{% url 'gestione:listacanzoni' can.autore.pk %}">{{can.autore|capfirst}}</a>
-              {% if can.album != None %}
-              <a class="card-body" style="color:#E4DFE2;font-size:20px" href="{% url 'gestione:dettagliaalbum' can.album.pk %}">{{can.album.titolo|capfirst}}</a>
-              {% endif %}
 
           </a>
                 </center>

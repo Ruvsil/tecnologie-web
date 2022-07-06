@@ -3,9 +3,41 @@
 {% load crispy_forms_tags %} 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
 
-{% block title %} Login come Lettore{% endblock %} 
+{% block title %} Login {% endblock %}
 
 {% block content %}
+
+
+
+{% if "notok" == request.GET.auth  %}
+
+<div id="info" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Necessario  login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> Per accedere alla funzionalità richiesta è necessario il login </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+      $("#info").modal('show');
+  });
+</script>
+
+{% endif %}
+
+
 
 <form method="post"> {% csrf_token %}
 

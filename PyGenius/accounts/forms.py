@@ -16,4 +16,6 @@ class CreaArtistaForm(UserCreationForm):
         user = super().save(commit)
         g = Group.objects.get(name="Artisti")
         g.user_set.add(user)
+        g = Group.objects.get(name="Editor")
+        g.user_set.add(user)
         return user

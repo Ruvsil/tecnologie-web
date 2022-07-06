@@ -1,37 +1,191 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load tags_gestione %}
 
 {% block title %} {{object.visite}} {{object.autore}} ― {{object.titolo}}{% endblock %}
 
 
-
 {% block content %}
-<div hidden> {{object.visita}} </div>
-<div class="card d-flex" style="background-color:#3C1B37">
-  <h5 class="card-header" style="color:#E4DFE2;height:300px">
 
 
-      <div class="card-header" style="font-size:50px"> <img style=" border: 5px solid #893168;border-radius: 25px;" src="{% static object.cover.url %}" width="200"  height="200">  {{object.titolo|capfirst}}</div>
+{% if user.is_authenticated %}
 
+<div hidden> {% visita object user.pk %} {% popolarità object %}</div>
 
-
-    <div style="color:#E4DFE2;padding:20px;text-align:center"> <a style="color:#E4DFE2" href="{% url 'gestione:listacanzoni' object.autore.pk %}">{{object.autore|capfirst}} </a>{{object.durata}} </div>
-  </h5>
-
-    <div class="card-body" style="background-color:#4A1942;width:75;color:#E4DFE2;text-align:center">{{object.testo|linebreaksbr}}</div>
+{% else %}
 
 
 
+<div hidden> {% visita object guest %} {% popolarità object %}</div>
 
-  {% if user.pk == object.autore.pk %}
+{% endif %}
+
+<div class="card d-flex" style="text-align:center;background-color:#E4DFE2; border: 2px solid #D9D3D0;border-radius: 5px;">
 
 
-  {% endif %}
+
+      <div class="card-header" style="font-size:45px"> <img style=" border: 2px solid #2E1C2B;border-radius: 10px;" src="{% static object.cover.url %}" width="200"  height="200">
+          <div style="color:#4B1B39;padding:20px;text-align:center;"> {{object.titolo|capfirst}}
+            <br>
+           <p style="font-size:30px;color:#4B1B39">
+               <a style="color:#4B1b39" href="{% url 'gestione:listacanzoni' object.autore.pk %}">{{object.autore|capfirst}}</a>
+
+               {% if object.album != None %}
+               <a style="color:#4B1b39" href="{% url 'gestione:dettagliaalbum' object.album.pk %}">{{object.album.titolo|capfirst}}</a>
+               {% endif %}
+               {{object.durata}}</p>
+          </div>
+      </div>
+
+
+    <div class="card-body" style="background-color:#E4DFE2;width:75;color:#4B1B39;text-align:center">{{object.testo|linebreaksbr}}</div>
+
+
 </div>
 
   <br>
   <br>
+
+    <center>
+        <script>
+
+    function upvote() {
+
+        }
+
+</script>
+      {% for contr in lista_contributi_star %}
+<div class="card d-flex" style="background-color:#E4DFE2;text-align:center">
+    <div class="card-header">
+           <br>
+    <a class="card-body" style="color:#893168;font-size:25px" href="{% url 'gestione:listacanzoni' contr.editor.pk %}">{{contr.editor|capfirst}}</a>
+
+
+
+            {% if contr.pk|slugify == request.GET.upvote %}
+                <div hidden>{{contr.upvote}}</div>
+            {% endif %}
+
+
+            {% if contr.pk|slugify == request.GET.downvote %}
+                <div hidden>{{contr.downvote}}</div>
+            {% endif %}
+
+            {% if contr.pk|slugify == request.GET.star %}
+                <div hidden>{{contr.star}}</div>
+            {% endif %}
+
+
+            <a href="{% url 'gestione:dettagliacanzone' object.pk %}?upvote={{contr.pk}}">
+                <input type="button" style="text-align:center;border-radius:25px" value="⇧">
+            </a>
+            {{contr.upvotes}}
+
+
+            <a href="{% url 'gestione:dettagliacanzone' object.pk %}?downvote={{contr.pk}}">
+                <input type="button" style="text-align:center;border-radius:25px" value="⇩">
+            </a>
+        {% if user == object.autore %}
+        <a href="{% url 'gestione:dettagliacanzone' object.pk %}?star={{contr.pk}}">
+            <input type="button" value="🌟" ;style="text-align:center;border-radius:25px">  </input>
+        </a>
+
+        {% endif %}
+         {% if contr.ha_star == True %}
+        <a>🌟</a>
+        {% endif %}
+
+
+        </div>
+            <center>
+                <br>
+          <p style="color:#4B1B39;text-align:center">
+              {{contr.testo|capfirst}}
+              <br>
+          </p>
+
+
+                </center>
+
+
+</div>
+<br>
+{% endfor %}
+
+
+        {% for contr in lista_contributi_non_star %}
+<div class="card d-flex" style="background-color:#E4DFE2;text-align:center">
+    <div class="card-header">
+           <br>
+    <a class="card-body" style="color:#893168;font-size:25px" href="{% url 'gestione:listacanzoni' contr.editor.pk %}">{{contr.editor|capfirst}}</a>
+
+
+
+            {% if contr.pk|slugify == request.GET.upvote %}
+                <div hidden>{{contr.upvote}}</div>
+            {% endif %}
+
+
+            {% if contr.pk|slugify == request.GET.downvote %}
+                <div hidden>{{contr.downvote}}</div>
+            {% endif %}
+
+            {% if contr.pk|slugify == request.GET.star %}
+                <div hidden>{{contr.star}}</div>
+            {% endif %}
+
+
+            <a href="{% url 'gestione:dettagliacanzone' object.pk %}?upvote={{contr.pk}}">
+                <input type="button" style="text-align:center;border-radius:25px" value="⇧">
+            </a>
+            {{contr.upvotes}}
+
+
+            <a href="{% url 'gestione:dettagliacanzone' object.pk %}?downvote={{contr.pk}}">
+                <input type="button" style="text-align:center;border-radius:25px" value="⇩">
+            </a>
+        {% if user == object.autore %}
+        <a href="{% url 'gestione:dettagliacanzone' object.pk %}?star={{contr.pk}}">
+            <input type="button" value="🌟" ;style="text-align:center;border-radius:25px">  </input>
+        </a>
+
+        {% endif %}
+
+
+        </div>
+            <center>
+                <br>
+          <p style="color:#4B1B39;text-align:center">
+              {{contr.testo|capfirst}}
+              <br>
+          </p>
+
+
+                </center>
+
+
+</div>
+<br>
+{% endfor %}
+
+
+
+
+
+
+
+ {% if user.is_authenticated %}
+      <div class="card" style="width:200px;text-align:center;border:5px solid;border-color:#4A1942;border-radius:50px">
+
+      <a style="color:#E4DFE2;background-color:#4A1942" href="{% url 'gestione:creacontributo' object.pk %}">
+        Crea Contributo
+      </a>
+      </div>
+
+    </center>
+  <br>
+  {% if user.pk == object.autore.pk %}
     <center>
       <div class="card" style="width:200px;text-align:center;border:5px solid;border-color:#4A1942;border-radius:50px">
       <a style="color:#E4DFE2;background-color:#4A1942" href="{% url 'gestione:eliminacanzone' object.pk %}">
@@ -39,5 +193,8 @@
       </a>
     </div>
     </center>
+  {% endif %}
+  {% endif %}
+
 
 {% endblock %}

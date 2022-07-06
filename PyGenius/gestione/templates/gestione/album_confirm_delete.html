@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Album eliminata{%endblock%}
+
+{% block header1 %}
+    <center>
+        Vuoi Eliminare l'album {{object.titolo|capfirst}}?
+    <br>
+    <a style="font-size:30px;color:black;text-decoration:underline;" href="{%url 'gestione:listaalbum' %}">Torna alla lista di album</a>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <p style="font-size:45px;text-align:center">L'AZIONE NON È ANNULLABILE</p>
+        {{ form }}
+        <br>
+        <center><input style="font-size:45px" type="submit" value="Conferma"></center>
+
+    </form>
+    </center>
+{% endblock %}
+
+
+
+

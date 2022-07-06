@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = "/?login=ok"
-LOGIN_URL = "accounts/login/?auth=notok"
+LOGIN_URL = "/accounts/login/?auth=notok"
 LOGOUT_REDIRECT_URL = f'/?loggedout'
 
 
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'it'
 
 TIME_ZONE = 'UTC'
 
@@ -131,4 +131,4 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'static')
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/')
