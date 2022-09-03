@@ -105,7 +105,7 @@
         <a class="nav-link" href="{% url 'gestione:listacanzoni' %}">Lista Canzoni</a>
          <a class="nav-link" href="{% url 'gestione:listaalbum' %}">Lista Albums</a>
         {% if user.is_authenticated %}
-        {% if request.user|has_group:"Artisti" %}
+        {% if user|has_group:"Artisti" %}
 
           <a class="nav-link" href="{% url 'gestione:creacanzone' %}">Aggiungi Canzone</a>
 

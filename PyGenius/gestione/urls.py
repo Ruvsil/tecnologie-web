@@ -10,6 +10,7 @@ urlpatterns = [
     path('dettagliacanzone/<pk>/', DettagliaCanzone.as_view(), name='dettagliacanzone'),
     path('eliminacanzone/<pk>/', EliminaCanzone.as_view(), name='eliminacanzone'),
     path('creacontributo/<pk>/', CreaContributo.as_view(), name='creacontributo'),
+    path('eliminacontributo/<pk>/', EliminaContributo.as_view(), name='eliminacontributo'),
     path('creaalbum/', CreaAlbum.as_view(), name='creaalbum'),
     path('listaalbum/', ListaAlbum.as_view(), name='listaalbum'),
     path('dettaglialbum/<pk>/', DettagliaAlbum.as_view(), name='dettagliaalbum'),

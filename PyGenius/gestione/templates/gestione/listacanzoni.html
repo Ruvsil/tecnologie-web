@@ -9,19 +9,19 @@
 
 {% block content %}
 
-{% if request.GET.eliminato  %}
+{% if request.GET.canzoneeliminato  %}
 
 <div id="info1" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Eliminato {{request.GET.eliminato}}</h5>
+        <h5 class="modal-title">Eliminato {{request.GET.canzoneeliminato}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p> La procedura di eliminazione della canzone {{request.GET.eliminato}} è andata a buon fine </p>
+        <p> La procedura di eliminazione della canzone {{request.GET.canzoneeliminato}} è andata a buon fine </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
@@ -36,6 +36,64 @@
 </script>
 
 {% endif %}
+
+
+{% if request.GET.search == 'none' %}
+
+<div id="info" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nessun risultato</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> La Ricerca non ha prodotto risultati </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+      $("#info").modal('show');
+  });
+</script>
+
+          {% endif %}
+
+{% if request.GET.contributoeliminato  %}
+
+<div id="info1" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminato {{request.GET.eliminato}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> La procedura di eliminazione del contributo {{request.GET.eliminato}} è andata a buon fine </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+      $("#info1").modal('show');
+  });
+</script>
+
+{% endif %}
+
 
 
 

@@ -9,15 +9,18 @@
 {% block content %}
 
 
+
+
+
 {% if user.is_authenticated %}
 
-<div hidden> {% visita object user.pk %} {% popolarità object %}</div>
+<div hidden> {% visita object user.pk %} {{object.pop}}</div>
 
 {% else %}
 
 
 
-<div hidden> {% visita object guest %} {% popolarità object %}</div>
+<div hidden> {% visita object guest %} {{object.pop}}</div>
 
 {% endif %}
 
@@ -65,15 +68,18 @@
 
             {% if contr.pk|slugify == request.GET.upvote %}
                 <div hidden>{{contr.upvote}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
 
             {% if contr.pk|slugify == request.GET.downvote %}
                 <div hidden>{{contr.downvote}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
             {% if contr.pk|slugify == request.GET.star %}
                 <div hidden>{{contr.star}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
 
@@ -87,10 +93,14 @@
                 <input type="button" style="text-align:center;border-radius:25px" value="⇩">
             </a>
         {% if user == object.autore %}
+            {% if contr.ha_star != True %}
+
+
         <a href="{% url 'gestione:dettagliacanzone' object.pk %}?star={{contr.pk}}">
             <input type="button" value="🌟" ;style="text-align:center;border-radius:25px">  </input>
         </a>
 
+        {% endif %}
         {% endif %}
          {% if contr.ha_star == True %}
         <a>🌟</a>
@@ -108,7 +118,11 @@
 
                 </center>
 
-
+   {% if user == contr.editor %}
+        <center><a style="color:#E4DFE2;background-color:#4A1942;border-radius:10px" href="{% url 'gestione:eliminacontributo' contr.pk %}">
+        Elimina Contributo
+      </a> <br> <br></center>
+    {% endif %}
 </div>
 <br>
 {% endfor %}
@@ -122,17 +136,20 @@
 
 
 
-            {% if contr.pk|slugify == request.GET.upvote %}
+           {% if contr.pk|slugify == request.GET.upvote %}
                 <div hidden>{{contr.upvote}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
 
             {% if contr.pk|slugify == request.GET.downvote %}
                 <div hidden>{{contr.downvote}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
             {% if contr.pk|slugify == request.GET.star %}
                 <div hidden>{{contr.star}}</div>
+                <meta http-equiv="REFRESH" content="0;url={% url 'gestione:dettagliacanzone' object.pk %}">
             {% endif %}
 
 
@@ -163,6 +180,11 @@
 
 
                 </center>
+    {% if user == contr.editor %}
+        <center><a style="color:#E4DFE2;background-color:#4A1942;border-radius:10px" href="{% url 'gestione:eliminacontributo' contr.pk %}">
+         <br>Elimina Contributo<br>
+      </a> <br> <br></center>
+    {% endif %}
 
 
 </div>

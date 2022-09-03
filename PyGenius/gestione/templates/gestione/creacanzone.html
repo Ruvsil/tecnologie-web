@@ -7,11 +7,21 @@
 
 {% block header1 %} {{view.title}} {% endblock %}
 
+
+
 {% block content %}
 
 <center>
 <div class="card d-flex justify-content-center " style="text-align:center;background-color:#2E1C2B;width:75%">
   <h5 class="card-header" style="background-color:#2E1C2B;color:#E4DFE2;height:70px">Inserisci i dati della canzone</h5>
+  {% if request.GET.error == 'double' %}
+
+    <h6 style="background-color:#2E1C2B;color:#dc3545;height:30px">
+      <br>
+
+      Esiste già una canzone con questo titolo e artista!
+    </h6>
+  {% endif %}
   <br>
   <div class="card-body" style="color:#E4DFE2">{% crispy form %}</div>
 

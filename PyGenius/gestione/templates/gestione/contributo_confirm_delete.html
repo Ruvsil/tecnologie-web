@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Contributo eliminato{%endblock%}
+
+{% block header1 %}
+    <center>
+        Vuoi Eliminare il contributo {{object.testo|capfirst}}?
+    <br>
+    <a style="font-size:30px;color:black;text-decoration:underline;" href="{%url 'gestione:listacanzoni' %}">Torna alla lista di canzoni</a>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <p style="font-size:45px;text-align:center">L'AZIONE NON È ANNULLABILE</p>
+        {{ form }}
+        <br>
+        <center><input style="font-size:45px" type="submit" value="Conferma"></center>
+
+    </form>
+    </center>
+{% endblock %}

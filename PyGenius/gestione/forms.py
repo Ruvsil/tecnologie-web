@@ -24,6 +24,11 @@ class CreaCanzoneForm(forms.ModelForm):
         HTML("<br>")
             )
 
+    def clean(self):
+        if self.cleaned_data['data_pub'] > datetime.date.today():
+            self.add_error('data_pub', 'La data inserita è successiva alla data odierna.')
+        return self.cleaned_data
+
     class Meta:
         model = Canzone
         fields =['titolo','durata','data_pub','testo','cover','album']
@@ -62,9 +67,14 @@ class CreaAlbumForm(forms.ModelForm):
         HTML("<br>"),
             )
 
+    def clean(self):
+        if self.cleaned_data['data_pub'] > datetime.date.today():
+            self.add_error('data_pub', 'La data inserita è successiva alla data odierna.')
+        return self.cleaned_data
+
     class Meta:
         model = Album
-        fields = ['titolo', 'data_pub', 'cover',]
+        fields = ['titolo', 'data_pub', 'cover']
         widgets = {
             'data_pub': forms.DateInput(attrs={'type': 'date'}),
             'cover': forms.FileInput(attrs={

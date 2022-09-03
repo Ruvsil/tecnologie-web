@@ -1,22 +1,14 @@
 import datetime
-import os
-from pathlib import Path
 
-from .models import *
-from .forms import *
-
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic.list import ListView
+from braces.views import GroupRequiredMixin
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
-from django.http import HttpResponse, HttpResponseRedirect
-from braces.views import GroupRequiredMixin
-from django.core.files import File
+from django.views.generic.list import ListView
+
+from .forms import *
+
 BASE = Path(__file__).resolve().parent.parent
 
 
@@ -37,15 +29,14 @@ class CreaCanzone(GroupRequiredMixin,CreateView):
         log_path = os.path.join(BASE, 'static','media','logs')
         if not os.path.isdir(log_path):
             os.mkdir(log_path)
-        with open(os.path.join(BASE, 'static','media','logs', f'file_{form.instance.titolo.replace(" ","_")}'),'ab'):
-            pass
-        form.instance.file_visite = os.path.join(log_path, f'file_{form.instance.titolo.replace(" ","_")}')
+        open(os.path.join(BASE, 'static','media','logs', f'file_{form.instance.titolo.replace(" ","_")+artista.username.replace(" ", "_")}'),'ab')
+        form.instance.file_visite = os.path.join(log_path, f'file_{form.instance.titolo.replace(" ","_")+artista.username.replace(" ", "_")}')
         form.instance.titolo_autore = form.instance.titolo + artista.username
 
         q = Canzone.objects.filter(titolo_autore = form.instance.titolo_autore)
         if len(q)>0:
-            raise forms.ValidationError('Esiste già una canzone con questo titolo e artista', code='invalid')
-
+            return HttpResponseRedirect(reverse_lazy('gestione:creacanzone') + '?error=double')
+            #raise forms.ValidationError('Esiste già una canzone con questo titolo e artista', code='invalid')
         return super(CreaCanzone, self).form_valid(form)
 
 
@@ -72,7 +63,6 @@ class CreaContributo(GroupRequiredMixin,CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['title'] = 'Creaeeeee'
         context['editor'] = self.kwargs['pk']
         return context
 
@@ -83,7 +73,7 @@ class ListaCanzoni(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['title'] = 'Pubblicazioni'
+        context['title'] = 'Canzoni'
         return context
 
 class ListaCanzoniArtista(ListView):
@@ -98,7 +88,7 @@ class ListaCanzoniArtista(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data()
-        context['title'] = 'Pubblicazioni'
+        context['title'] = 'Canzoni'
         return context
 
 class DettagliaCanzone(DetailView):
@@ -107,12 +97,16 @@ class DettagliaCanzone(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data()
-        context['lista_contributi_star'] = Contributo.objects.filter(canzone=self.kwargs['pk']).filter(ha_star=True)
+        context['lista_contributi_star'] = Contributo.objects.filter(canzone=self.kwargs['pk']).filter(ha_star=True).order_by('-upvotes')
         context['lista_contributi_non_star'] = Contributo.objects.filter(canzone=self.kwargs['pk']).filter(ha_star=False).order_by('-upvotes')
 
+        ip = self.request.META['REMOTE_ADDR'].split(sep='.')
+        guest = ''
+        for num in ip:
+            guest+=num
+        guest = int(guest)
 
-
-        context['guest'] = sum(list(map(int,self.request.META['REMOTE_ADDR'].split(sep='.'))))
+        context['guest'] = guest
 
 
         #print(context['lista_contributi'])
@@ -122,9 +116,9 @@ class DettagliaCanzone(DetailView):
 class EliminaCanzone(GroupRequiredMixin,DeleteView):
     group_required = ["Artisti"]
     model = Canzone
-
     def get_success_url(self):
-        return reverse_lazy('gestione:listacanzoni')+f'?eliminato={self.object.pk}'
+
+        return reverse_lazy('gestione:listacanzoni')+f'?canzoneeliminato={self.object.titolo}'
 
 
 class CreaAlbum(GroupRequiredMixin,CreateView):
@@ -142,14 +136,15 @@ class CreaAlbum(GroupRequiredMixin,CreateView):
         form.instance.titolo_autore = form.instance.titolo + artista.username
         q = Album.objects.filter(titolo_autore=form.instance.titolo_autore)
         if len(q) > 0:
-            raise forms.ValidationError('Esiste già un album con questo titolo e artista', code='invalid')
+            return HttpResponseRedirect(reverse_lazy('gestione:creaalbum')+'?error=double')
+            #raise forms.ValidationError('Esiste già un album con questo autore e titolo')
         return super(CreaAlbum, self).form_valid(form)
 
 
 class ListaAlbum(ListView):
     model = Album
     template_name = 'gestione/listaalbum.html'
-    queryset = Album.objects.all()[:15]
+    queryset = Album.objects.order_by('-popolarità')[:15]
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
@@ -173,7 +168,14 @@ class EliminaAlbum(GroupRequiredMixin,DeleteView):
     model = Album
 
     def get_success_url(self):
-        return reverse_lazy('gestione:listaalbum') + f'?eliminato={self.object.pk}'
+        return reverse_lazy('gestione:listaalbum') + f'?albumeliminato={self.object.titolo}'
+
+class EliminaContributo(GroupRequiredMixin,DeleteView):
+    group_required = ["Editor"]
+    model = Contributo
+
+    def get_success_url(self):
+        return reverse_lazy('gestione:listacanzoni') + f'?contributoeliminato={self.object.testo}'
 
 def RisultatiRicerca(request):
         search = request.GET['q']
@@ -186,14 +188,14 @@ def RisultatiRicerca(request):
 
                 return HttpResponseRedirect(f"{reverse_lazy('gestione:listacanzoni')}{artista[0].pk}")
             else :
-                return HttpResponseRedirect(reverse_lazy('gestione:listacanzoni')+'?search=notok')
+                return HttpResponseRedirect(reverse_lazy('gestione:listacanzoni')+'?search=none')
         if model == 'Canzoni':
             canzone = Canzone.objects.filter(titolo=search)
 
 
             if len(canzone) > 0 :
 
-                return HttpResponse(render_to_string("gestione/listacanzoni.html",context={'object_list': canzone}))
+                return HttpResponse(render_to_string("gestione/listacanzoni.html",context={'object_list': canzone, 'user':request.user}))
             else:
                 return HttpResponseRedirect(reverse_lazy('gestione:listacanzoni') + '?search=none')
         if model == 'Album':
@@ -202,6 +204,6 @@ def RisultatiRicerca(request):
 
             if len(album) > 0:
 
-                return HttpResponse(render_to_string("gestione/listacanzoni.html", context={'object_list': album}))
+                return HttpResponse(render_to_string("gestione/listaalbum.html", context={'object_list': album,'user':request.user}))
             else:
                 return HttpResponseRedirect(reverse_lazy('gestione:listacanzoni') + '?search=none')

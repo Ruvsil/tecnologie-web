@@ -9,6 +9,8 @@ django-crispy-forms = "*"
 django-braces = "*"
 pillow = "*"
 numpy = "*"
+lyricsgenius = "*"
+requests = "*"
 
 [dev-packages]
 
